@@ -1,28 +1,47 @@
-export default function AdminPage() {
-  return (
-    <main style={{ padding: 20, fontFamily: "serif" }}>
-      <h1>Add a Book</h1>
+import { books } from "./data/books";
 
-      <form style={{ display: "grid", gap: 12, maxWidth: 500 }}>
-        <input placeholder="Book title" style={{ padding: 12, fontSize: 16 }} />
-        <input placeholder="Author" style={{ padding: 12, fontSize: 16 }} />
-        <input
-          placeholder="Rating out of 5"
-          type="number"
-          min="0"
-          max="5"
-          style={{ padding: 12, fontSize: 16 }}
-        />
-        <input placeholder="Cover image URL" style={{ padding: 12, fontSize: 16 }} />
-        <textarea
-          placeholder="Your review"
-          rows="5"
-          style={{ padding: 12, fontSize: 16 }}
-        />
-        <button type="button" style={{ padding: 12, fontSize: 16 }}>
-          Save Book
-        </button>
-      </form>
-    </main>
+export default function Home() {
+  return (
+    <div style={{ padding: 20, background: "#f5efe6", minHeight: "100vh" }}>
+      <h1 style={{ fontFamily: "serif" }}>My Bookshelf</h1>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          gap: 20
+        }}
+      >
+        {books.map((book, i) => (
+          <div
+            key={i}
+            style={{
+              background: "#e7dcc8",
+              padding: 12,
+              textAlign: "center",
+              borderRadius: 8
+            }}
+          >
+            <img
+              src={book.image}
+              alt={book.title}
+              style={{
+                width: "100%",
+                height: 220,
+                objectFit: "cover",
+                display: "block",
+                marginBottom: 12
+              }}
+            />
+            <p style={{ fontFamily: "serif", fontSize: 18, margin: "8px 0" }}>
+              {book.title}
+            </p>
+            <p style={{ margin: 0, fontSize: 24 }}>
+              {"⭐".repeat(book.rating)}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
