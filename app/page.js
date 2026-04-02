@@ -1,22 +1,14 @@
-export default function Home() {
-  const books = [
-    { title: "1984", rating: 5 },
-    { title: "The Hobbit", rating: 4 },
-    { title: "Dune", rating: 5 },
-    { title: "Sapiens", rating: 4 },
-    { title: "Atomic Habits", rating: 4 },
-    { title: "Harry Potter", rating: 5 },
-    { title: "The Alchemist", rating: 3 },
-    { title: "Brave New World", rating: 4 }
-  ];
+import { books } from "./data/books";
 
+export default function Home() {
   return (
-    <div style={{ padding: 20 }}>
-      <h1>My Bookshelf</h1>
+    <div style={{ padding: 20, background: "#f5efe6", minHeight: "100vh" }}>
+      <h1 style={{ fontFamily: "serif" }}>My Bookshelf</h1>
+
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
+          gridTemplateColumns: "repeat(2, 1fr)",
           gap: 20
         }}
       >
@@ -24,14 +16,29 @@ export default function Home() {
           <div
             key={i}
             style={{
-              background: "#eee",
-              padding: 10,
-              textAlign: "center"
+              background: "#e7dcc8",
+              padding: 12,
+              textAlign: "center",
+              borderRadius: 8
             }}
           >
-            <div style={{ height: 120, background: "#ccc" }} />
-            <p>{book.title}</p>
-            <p>{"⭐".repeat(book.rating)}</p>
+            <img
+              src={book.image}
+              alt={book.title}
+              style={{
+                width: "100%",
+                height: 220,
+                objectFit: "cover",
+                display: "block",
+                marginBottom: 12
+              }}
+            />
+            <p style={{ fontFamily: "serif", fontSize: 18, margin: "8px 0" }}>
+              {book.title}
+            </p>
+            <p style={{ margin: 0, fontSize: 24 }}>
+              {"⭐".repeat(book.rating)}
+            </p>
           </div>
         ))}
       </div>
