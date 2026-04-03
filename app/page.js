@@ -1,3 +1,4 @@
+
 export default function Home() {
   const books = [
     { title: "1984", rating: 5 },
@@ -18,6 +19,21 @@ export default function Home() {
       }}
     >
       <h1>My Bookshelf</h1>
+
+      <a
+        href="/admin"
+        style={{
+          display: "inline-block",
+          marginBottom: 20,
+          padding: "10px 14px",
+          background: "#8b5e3c",
+          color: "white",
+          textDecoration: "none",
+          borderRadius: 6
+        }}
+      >
+        Go to Add a Book
+      </a>
 
       <div
         style={{
