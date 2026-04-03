@@ -47,13 +47,48 @@ export default function WantedPage() {
     >
       <h1>Wanted Books</h1>
 
-      <p>
-        <a href="/">Back to My Bookshelf</a>
-      </p>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 12,
+          marginBottom: 20
+        }}
+      >
+        <a
+          href="/"
+          style={{
+            display: "block",
+            textAlign: "center",
+            padding: "12px 10px",
+            background: "#8b5e3c",
+            color: "white",
+            textDecoration: "none",
+            borderRadius: 8,
+            fontWeight: "bold",
+            boxShadow: "0 4px 6px rgba(0,0,0,0.2)"
+          }}
+        >
+          ← My Bookshelf
+        </a>
 
-      <p>
-        <a href="/wanted/add">Add a Wanted Book</a>
-      </p>
+        <a
+          href="/wanted/add"
+          style={{
+            display: "block",
+            textAlign: "center",
+            padding: "12px 10px",
+            background: "#3c6e71",
+            color: "white",
+            textDecoration: "none",
+            borderRadius: 8,
+            fontWeight: "bold",
+            boxShadow: "0 4px 6px rgba(0,0,0,0.2)"
+          }}
+        >
+          ➕ Add Wanted Book
+        </a>
+      </div>
 
       {wantedBooks.length === 0 ? (
         <p>No wanted books yet.</p>
@@ -125,7 +160,8 @@ export default function WantedPage() {
                   background: "#a94442",
                   color: "white",
                   border: "none",
-                  borderRadius: 6
+                  borderRadius: 6,
+                  boxShadow: "0 4px 6px rgba(0,0,0,0.2)"
                 }}
               >
                 Delete
