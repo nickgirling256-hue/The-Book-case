@@ -20,20 +20,21 @@ export default function Home() {
     >
       <h1>My Bookshelf</h1>
 
-      <a
-        href="https://the-book-case-nio7.vercel.app/admin"
-        style={{
-          display: "inline-block",
-          marginBottom: 20,
-          padding: "10px 14px",
-          background: "#8b5e3c",
-          color: "white",
-          textDecoration: "none",
-          borderRadius: 6
-        }}
-      >
-        Go to Add a Book
-      </a>
+      <button
+  onClick={() => {
+    window.location.href = "/admin";
+  }}
+  style={{
+    marginBottom: 20,
+    padding: "10px 14px",
+    background: "#8b5e3c",
+    color: "white",
+    border: "none",
+    borderRadius: 6
+  }}
+>
+  Go to Add a Book
+</button>
 
       <div
         style={{
