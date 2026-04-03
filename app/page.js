@@ -1,57 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function AdminPage() {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [rating, setRating] = useState("");
-  const [review, setReview] = useState("");
-  const [message, setMessage] = useState("");
-
-  async function saveBook() {
-    setMessage("Fetching book cover...");
-
-    let image = "";
-
-    try {
-      const query = encodeURIComponent(`${title} ${author}`);
-      const response = await fetch(
-        `https://openlibrary.org/search.json?title=${encodeURIComponent(title)}&author=${encodeURIComponent(author)}`
-      );
-      const data = await response.json();
-
-      if (data.docs && data.docs.length > 0) {
-        const firstBook = data.docs[0];
-
-        if (firstBook.cover_i) {
-          image = `https://covers.openlibrary.org/b/id/${firstBook.cover_i}-L.jpg`;
-        }
-      }
-    } catch (error) {
-      console.log("Cover fetch failed", error);
+export default function Home() {
+  const starterBooks = [
+    {
+      title: "1984",
+      rating: 5,
+      image: "https://covers.openlibrary.org/b/isbn/9780451524935-L.jpg",
+      review: ""
+    },
+    {
+      title: "The Hobbit",
+      rating: 4,
+      image: "https://covers.openlibrary.org/b/isbn/9780547928227-L.jpg",
+      review: ""
+    },
+    {
+      title: "Dune",
+      rating: 5,
+      image: "https://covers.openlibrary.org/b/isbn/9780441172719-L.jpg",
+      review: ""
+    },
+    {
+      title: "Atomic Habits",
+      rating: 4,
+      image: "https://covers.openlibrary.org/b/isbn/9780735211292-L.jpg",
+      review: ""
     }
+  ];
 
-    const existingBooks = JSON.parse(localStorage.getItem("myBooks")) || [];
+  const [books, setBooks] = useState(starterBooks);
 
-    const newBook = {
-      title,
-      author,
-      rating: Number(rating),
-      image,
-      review
-    };
-
-    const updatedBooks = [newBook, ...existingBooks];
-    localStorage.setItem("myBooks", JSON.stringify(updatedBooks));
-
-    setMessage("Book saved!");
-
-    setTitle("");
-    setAuthor("");
-    setRating("");
-    setReview("");
-  }
+  useEffect(() => {
+    const savedBooks = localStorage.getItem("myBooks");
+    if (savedBooks) {
+      setBooks(JSON.parse(savedBooks));
+    }
+  }, []);
 
   return (
     <main
@@ -62,57 +48,51 @@ export default function AdminPage() {
         minHeight: "100vh"
       }}
     >
-      <h1>Add a Book</h1>
+      <h1>My Bookshelf</h1>
 
       <p>
-        <a href="/">Back to Bookshelf</a>
+        <a href="/admin">Go to Add a Book</a>
       </p>
 
-      <div style={{ display: "grid", gap: 12, maxWidth: 500, marginTop: 20 }}>
-        <input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Book title"
-          style={{ padding: 12, fontSize: 16, border: "1px solid #ccc", borderRadius: 6 }}
-        />
-        <input
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-          placeholder="Author"
-          style={{ padding: 12, fontSize: 16, border: "1px solid #ccc", borderRadius: 6 }}
-        />
-        <input
-          value={rating}
-          onChange={(e) => setRating(e.target.value)}
-          placeholder="Rating out of 5"
-          type="number"
-          min="0"
-          max="5"
-          style={{ padding: 12, fontSize: 16, border: "1px solid #ccc", borderRadius: 6 }}
-        />
-        <textarea
-          value={review}
-          onChange={(e) => setReview(e.target.value)}
-          placeholder="Your review"
-          rows="5"
-          style={{ padding: 12, fontSize: 16, border: "1px solid #ccc", borderRadius: 6 }}
-        />
-        <button
-          type="button"
-          onClick={saveBook}
-          style={{
-            padding: 12,
-            fontSize: 16,
-            background: "#8b5e3c",
-            color: "white",
-            border: "none",
-            borderRadius: 6
-          }}
-        >
-          Save Book
-        </button>
-
-        {message ? <p>{message}</p> : null}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          gap: 20,
+          marginTop: 20
+        }}
+      >
+        {books.map((book, i) => (
+          <div
+            key={i}
+            style={{
+              background: "#e7dcc8",
+              padding: 12,
+              textAlign: "center",
+              borderRadius: 8
+            }}
+          >
+            <img
+              src={book.image || "https://via.placeholder.com/200x300?text=No+Cover"}
+              alt={book.title}
+              onError={(e) => {
+                e.currentTarget.src =
+                  "https://via.placeholder.com/200x300?text=No+Cover";
+              }}
+              style={{
+                width: "100%",
+                height: 220,
+                objectFit: "cover",
+                marginBottom: 12,
+                borderRadius: 4
+              }}
+            />
+            <p style={{ fontSize: 18, margin: "8px 0" }}>{book.title}</p>
+            <p style={{ fontSize: 24, margin: 0 }}>
+              {"⭐".repeat(Number(book.rating || 0))}
+            </p>
+          </div>
+        ))}
       </div>
     </main>
   );
