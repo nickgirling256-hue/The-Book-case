@@ -57,8 +57,14 @@ export default function Home() {
       <h1>My Bookshelf</h1>
 
       <p>
-        <a href="/admin">Go to Add a Book</a>
-      </p>
+  <a href="/admin">Add a Read Book</a>
+</p>
+
+<p>
+  <a href="/wanted">Go to Wanted Books</a>
+</p>
+
+      
 
       <div
         style={{
