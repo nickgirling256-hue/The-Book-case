@@ -1,4 +1,3 @@
-
 "use client";
 
 export default function Home() {
@@ -24,7 +23,7 @@ export default function Home() {
 
       <button
         onClick={() => {
-          window.location.href = "/admin";
+          window.location.assign("/admin");
         }}
         style={{
           marginBottom: 20,
