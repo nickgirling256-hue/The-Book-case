@@ -62,29 +62,59 @@ export default function AddWantedBookPage() {
     >
       <h1>Add a Wanted Book</h1>
 
-      <p>
-        <a href="/wanted">Back to Wanted Books</a>
-      </p>
+      <div style={{ marginBottom: 20 }}>
+        <a
+          href="/wanted"
+          style={{
+            display: "block",
+            textAlign: "center",
+            padding: "12px 10px",
+            background: "#3c6e71",
+            color: "white",
+            textDecoration: "none",
+            borderRadius: 8,
+            fontWeight: "bold",
+            boxShadow: "0 4px 6px rgba(0,0,0,0.2)"
+          }}
+        >
+          ← Back to Wanted Books
+        </a>
+      </div>
 
       <div style={{ display: "grid", gap: 12, maxWidth: 500, marginTop: 20 }}>
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Book title"
-          style={{ padding: 12, fontSize: 16, border: "1px solid #ccc", borderRadius: 6 }}
+          style={{
+            padding: 12,
+            fontSize: 16,
+            border: "1px solid #ccc",
+            borderRadius: 6
+          }}
         />
         <input
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
           placeholder="Author"
-          style={{ padding: 12, fontSize: 16, border: "1px solid #ccc", borderRadius: 6 }}
+          style={{
+            padding: 12,
+            fontSize: 16,
+            border: "1px solid #ccc",
+            borderRadius: 6
+          }}
         />
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Why you want to read it"
           rows="5"
-          style={{ padding: 12, fontSize: 16, border: "1px solid #ccc", borderRadius: 6 }}
+          style={{
+            padding: 12,
+            fontSize: 16,
+            border: "1px solid #ccc",
+            borderRadius: 6
+          }}
         />
         <button
           type="button"
@@ -92,10 +122,12 @@ export default function AddWantedBookPage() {
           style={{
             padding: 12,
             fontSize: 16,
-            background: "#8b5e3c",
+            background: "#3c6e71",
             color: "white",
             border: "none",
-            borderRadius: 6
+            borderRadius: 8,
+            fontWeight: "bold",
+            boxShadow: "0 4px 6px rgba(0,0,0,0.2)"
           }}
         >
           Save Wanted Book
@@ -103,6 +135,6 @@ export default function AddWantedBookPage() {
 
         {message ? <p>{message}</p> : null}
       </div>
-    </main>
+    </main>m
   );
 }
