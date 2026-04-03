@@ -21,7 +21,7 @@ export default function Home() {
       <h1>My Bookshelf</h1>
 
       <a
-        href="/admin"
+        href="https://the-book-case-nio7.vercel.app/admin"
         style={{
           display: "inline-block",
           marginBottom: 20,
