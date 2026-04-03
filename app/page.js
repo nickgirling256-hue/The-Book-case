@@ -1,8 +1,59 @@
 export default function Home() {
+  const books = [
+    { title: "1984", rating: 5 },
+    { title: "The Hobbit", rating: 4 },
+    { title: "Dune", rating: 5 },
+    { title: "Atomic Habits", rating: 4 }
+  ];
+
   return (
-    <main style={{ padding: 20, fontFamily: "serif" }}>
+    <main
+      style={{
+        padding: 20,
+        fontFamily: "serif",
+        background: "#f5efe6",
+        minHeight: "100vh"
+      }}
+    >
       <h1>My Bookshelf</h1>
-      <p>Homepage is working.</p>
+
+      <p>
+        Type <strong>/admin</strong> at the end of your site address to add books.
+      </p>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          gap: 20,
+          marginTop: 20
+        }}
+      >
+        {books.map((book, i) => (
+          <div
+            key={i}
+            style={{
+              background: "#e7dcc8",
+              padding: 12,
+              textAlign: "center",
+              borderRadius: 8
+            }}
+          >
+            <div
+              style={{
+                width: "100%",
+                height: 220,
+                background: "#cfcfcf",
+                marginBottom: 12
+              }}
+            />
+            <p style={{ fontSize: 18, margin: "8px 0" }}>{book.title}</p>
+            <p style={{ fontSize: 24, margin: 0 }}>
+              {"⭐".repeat(book.rating)}
+            </p>
+          </div>
+        ))}
+      </div>
     </main>
   );
 }
