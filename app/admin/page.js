@@ -6,10 +6,32 @@ export default function AdminPage() {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [rating, setRating] = useState("");
-  const [image, setImage] = useState("");
   const [review, setReview] = useState("");
+  const [message, setMessage] = useState("");
 
-  function saveBook() {
+  async function saveBook() {
+    setMessage("Fetching book cover...");
+
+    let image = "";
+
+    try {
+      const query = encodeURIComponent(`${title} ${author}`);
+      const response = await fetch(
+        `https://openlibrary.org/search.json?title=${encodeURIComponent(title)}&author=${encodeURIComponent(author)}`
+      );
+      const data = await response.json();
+
+      if (data.docs && data.docs.length > 0) {
+        const firstBook = data.docs[0];
+
+        if (firstBook.cover_i) {
+          image = `https://covers.openlibrary.org/b/id/${firstBook.cover_i}-L.jpg`;
+        }
+      }
+    } catch (error) {
+      console.log("Cover fetch failed", error);
+    }
+
     const existingBooks = JSON.parse(localStorage.getItem("myBooks")) || [];
 
     const newBook = {
@@ -23,12 +45,11 @@ export default function AdminPage() {
     const updatedBooks = [newBook, ...existingBooks];
     localStorage.setItem("myBooks", JSON.stringify(updatedBooks));
 
-    alert("Book saved!");
+    setMessage("Book saved!");
 
     setTitle("");
     setAuthor("");
     setRating("");
-    setImage("");
     setReview("");
   }
 
@@ -69,12 +90,6 @@ export default function AdminPage() {
           max="5"
           style={{ padding: 12, fontSize: 16, border: "1px solid #ccc", borderRadius: 6 }}
         />
-        <input
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
-          placeholder="Cover image URL"
-          style={{ padding: 12, fontSize: 16, border: "1px solid #ccc", borderRadius: 6 }}
-        />
         <textarea
           value={review}
           onChange={(e) => setReview(e.target.value)}
@@ -96,6 +111,8 @@ export default function AdminPage() {
         >
           Save Book
         </button>
+
+        {message ? <p>{message}</p> : null}
       </div>
     </main>
   );
