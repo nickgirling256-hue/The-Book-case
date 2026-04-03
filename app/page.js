@@ -1,9 +1,26 @@
+
 export default function Home() {
   const books = [
-    { title: "1984", rating: 5 },
-    { title: "The Hobbit", rating: 4 },
-    { title: "Dune", rating: 5 },
-    { title: "Atomic Habits", rating: 4 }
+    {
+      title: "1984",
+      rating: 5,
+      image: "https://covers.openlibrary.org/b/isbn/9780451524935-L.jpg"
+    },
+    {
+      title: "The Hobbit",
+      rating: 4,
+      image: "https://covers.openlibrary.org/b/isbn/9780547928227-L.jpg"
+    },
+    {
+      title: "Dune",
+      rating: 5,
+      image: "https://covers.openlibrary.org/b/isbn/9780441172719-L.jpg"
+    },
+    {
+      title: "Atomic Habits",
+      rating: 4,
+      image: "https://covers.openlibrary.org/b/isbn/9780735211292-L.jpg"
+    }
   ];
 
   return (
@@ -39,12 +56,15 @@ export default function Home() {
               borderRadius: 8
             }}
           >
-            <div
+            <img
+              src={book.image}
+              alt={book.title}
               style={{
                 width: "100%",
                 height: 220,
-                background: "#cfcfcf",
-                marginBottom: 12
+                objectFit: "cover",
+                marginBottom: 12,
+                borderRadius: 4
               }}
             />
             <p style={{ fontSize: 18, margin: "8px 0" }}>{book.title}</p>
