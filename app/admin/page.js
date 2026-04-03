@@ -1,4 +1,4 @@
-import { books } from "./data/books";
+
 
 export default function Home() {
   return (
