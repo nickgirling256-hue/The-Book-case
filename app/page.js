@@ -56,14 +56,48 @@ export default function Home() {
     >
       <h1>My Bookshelf</h1>
 
-      <p>
-  <a href="/admin">Add a Read Book</a>
-</p>
+      <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: 12,
+    marginBottom: 20
+  }}
+>
+  <a
+    href="/admin"
+    style={{
+      display: "block",
+      textAlign: "center",
+      padding: "12px 10px",
+      background: "#8b5e3c",
+      color: "white",
+      textDecoration: "none",
+      borderRadius: 8,
+      fontWeight: "bold",
+      boxShadow: "0 4px 6px rgba(0,0,0,0.2)"
+    }}
+  >
+    ➕ Add Read Book
+  </a>
 
-<p>
-  <a href="/wanted">Go to Wanted Books</a>
-</p>
-
+  <a
+    href="/wanted"
+    style={{
+      display: "block",
+      textAlign: "center",
+      padding: "12px 10px",
+      background: "#3c6e71",
+      color: "white",
+      textDecoration: "none",
+      borderRadius: 8,
+      fontWeight: "bold",
+      boxShadow: "0 4px 6px rgba(0,0,0,0.2)"
+    }}
+  >
+    📚 Wanted Books
+  </a>
+</div>
       
 
       <div
