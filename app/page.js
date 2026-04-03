@@ -33,6 +33,9 @@ export default function Home() {
       }}
     >
       <h1>My Bookshelf</h1>
+      <p>
+  <a href="/admin">Go to Add a Book</a>
+</p>
 
       <p>
         Type <strong>/admin</strong> at the end of your site address to add books.
