@@ -39,6 +39,12 @@ export default function Home() {
     }
   }, []);
 
+  function deleteBook(indexToDelete) {
+    const updatedBooks = books.filter((_, index) => index !== indexToDelete);
+    setBooks(updatedBooks);
+    localStorage.setItem("myBooks", JSON.stringify(updatedBooks));
+  }
+
   return (
     <main
       style={{
@@ -87,10 +93,27 @@ export default function Home() {
                 borderRadius: 4
               }}
             />
+
             <p style={{ fontSize: 18, margin: "8px 0" }}>{book.title}</p>
-            <p style={{ fontSize: 24, margin: 0 }}>
+
+            <p style={{ fontSize: 24, margin: "0 0 12px 0" }}>
               {"⭐".repeat(Number(book.rating || 0))}
             </p>
+
+            <button
+              type="button"
+              onClick={() => deleteBook(i)}
+              style={{
+                padding: "8px 12px",
+                fontSize: 14,
+                background: "#a94442",
+                color: "white",
+                border: "none",
+                borderRadius: 6
+              }}
+            >
+              Delete
+            </button>
           </div>
         ))}
       </div>
