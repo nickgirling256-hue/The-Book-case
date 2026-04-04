@@ -135,6 +135,6 @@ export default function AddWantedBookPage() {
 
         {message ? <p>{message}</p> : null}
       </div>
-    </main>m
+    </main>
   );
 }
