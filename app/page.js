@@ -1,55 +1,21 @@
-
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function AddWantedBookPage() {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [notes, setNotes] = useState("");
-  const [message, setMessage] = useState("");
+export default function HomePage() {
+  const [books, setBooks] = useState([]);
 
-  async function saveWantedBook() {
-    setMessage("Fetching book cover...");
+  useEffect(() => {
+    const storedBooks =
+      JSON.parse(localStorage.getItem("books")) || [];
+    setBooks(storedBooks);
+  }, []);
 
-    let image = "";
-
-    try {
-      const response = await fetch(
-        `https://openlibrary.org/search.json?title=${encodeURIComponent(title)}&author=${encodeURIComponent(author)}`
-      );
-      const data = await response.json();
-
-      if (data.docs && data.docs.length > 0) {
-        const firstBook = data.docs[0];
-
-        if (firstBook.cover_i) {
-          image = `https://covers.openlibrary.org/b/id/${firstBook.cover_i}-L.jpg`;
-        }
-      }
-    } catch (error) {
-      console.log("Cover fetch failed", error);
-    }
-
-    const existingWantedBooks =
-      JSON.parse(localStorage.getItem("wantedBooks")) || [];
-
-    const newBook = {
-      title,
-      author,
-      notes,
-      image,
-      rating: 0
-    };
-
-    const updatedWantedBooks = [newBook, ...existingWantedBooks];
-    localStorage.setItem("wantedBooks", JSON.stringify(updatedWantedBooks));
-
-    setMessage("Wanted book saved!");
-
-    setTitle("");
-    setAuthor("");
-    setNotes("");
+  function deleteBook(index) {
+    const updatedBooks = [...books];
+    updatedBooks.splice(index, 1);
+    setBooks(updatedBooks);
+    localStorage.setItem("books", JSON.stringify(updatedBooks));
   }
 
   return (
@@ -61,15 +27,22 @@ export default function AddWantedBookPage() {
         minHeight: "100vh"
       }}
     >
-      <h1>Add a Wanted Book</h1>
+      <h1 style={{ marginBottom: 20 }}>My Bookshelf</h1>
 
-      <div style={{ marginBottom: 20 }}>
+      {/* NAV BUTTONS */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 10,
+          marginBottom: 20
+        }}
+      >
         <a
-          href="/wanted"
+          href="/admin"
           style={{
-            display: "block",
             textAlign: "center",
-            padding: "12px 10px",
+            padding: 12,
             background: "#3c6e71",
             color: "white",
             textDecoration: "none",
@@ -78,63 +51,90 @@ export default function AddWantedBookPage() {
             boxShadow: "0 4px 6px rgba(0,0,0,0.2)"
           }}
         >
-          ← Back to Wanted Books
+          ➕ Add Book
         </a>
-      </div>
 
-      <div style={{ display: "grid", gap: 12, maxWidth: 500, marginTop: 20 }}>
-        <input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Book title"
+        <a
+          href="/wanted"
           style={{
+            textAlign: "center",
             padding: 12,
-            fontSize: 16,
-            border: "1px solid #ccc",
-            borderRadius: 6
-          }}
-        />
-        <input
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-          placeholder="Author"
-          style={{
-            padding: 12,
-            fontSize: 16,
-            border: "1px solid #ccc",
-            borderRadius: 6
-          }}
-        />
-        <textarea
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          placeholder="Why you want to read it"
-          rows="5"
-          style={{
-            padding: 12,
-            fontSize: 16,
-            border: "1px solid #ccc",
-            borderRadius: 6
-          }}
-        />
-        <button
-          type="button"
-          onClick={saveWantedBook}
-          style={{
-            padding: 12,
-            fontSize: 16,
-            background: "#3c6e71",
+            background: "#d9a441",
             color: "white",
-            border: "none",
+            textDecoration: "none",
             borderRadius: 8,
             fontWeight: "bold",
             boxShadow: "0 4px 6px rgba(0,0,0,0.2)"
           }}
         >
-          Save Wanted Book
-        </button>
+          📚 Wanted Books
+        </a>
+      </div>
 
-        {message ? <p>{message}</p> : null}
+      {/* BOOK GRID */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          gap: 20
+        }}
+      >
+        {books.map((book, index) => (
+          <div
+            key={index}
+            style={{
+              background: "#ddd",
+              padding: 10,
+              borderRadius: 6,
+              textAlign: "center"
+            }}
+          >
+            {/* IMAGE */}
+            <div
+              style={{
+                width: "100%",
+                height: 150,
+                background: "#bbb",
+                marginBottom: 10
+              }}
+            >
+              {book.image ? (
+                <img
+                  src={book.image}
+                  alt={book.title}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover"
+                  }}
+                />
+              ) : null}
+            </div>
+
+            {/* TITLE */}
+            <div style={{ fontSize: 18 }}>{book.title}</div>
+
+            {/* STARS */}
+            <div style={{ color: "gold", margin: "6px 0" }}>
+              {"⭐".repeat(book.rating || 0)}
+            </div>
+
+            {/* DELETE BUTTON */}
+            <button
+              onClick={() => deleteBook(index)}
+              style={{
+                marginTop: 8,
+                padding: "6px 10px",
+                background: "#c44536",
+                color: "white",
+                border: "none",
+                borderRadius: 6
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        ))}
       </div>
     </main>
   );
