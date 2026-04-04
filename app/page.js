@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -7,7 +8,7 @@ export default function HomePage() {
 
   useEffect(() => {
     const storedBooks =
-      JSON.parse(localStorage.getItem("books")) || [];
+      JSON.parse(localStorage.getItem("myBooks")) || [];
     setBooks(storedBooks);
   }, []);
 
@@ -15,7 +16,7 @@ export default function HomePage() {
     const updatedBooks = [...books];
     updatedBooks.splice(index, 1);
     setBooks(updatedBooks);
-    localStorage.setItem("books", JSON.stringify(updatedBooks));
+    localStorage.setItem("myBooks", JSON.stringify(updatedBooks));
   }
 
   return (
@@ -29,7 +30,6 @@ export default function HomePage() {
     >
       <h1 style={{ marginBottom: 20 }}>My Bookshelf</h1>
 
-      {/* NAV BUTTONS */}
       <div
         style={{
           display: "grid",
@@ -71,71 +71,70 @@ export default function HomePage() {
         </a>
       </div>
 
-      {/* BOOK GRID */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
-          gap: 20
-        }}
-      >
-        {books.map((book, index) => (
-          <div
-            key={index}
-            style={{
-              background: "#ddd",
-              padding: 10,
-              borderRadius: 6,
-              textAlign: "center"
-            }}
-          >
-            {/* IMAGE */}
+      {books.length === 0 ? (
+        <p>No books saved yet.</p>
+      ) : (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: 20
+          }}
+        >
+          {books.map((book, index) => (
             <div
+              key={index}
               style={{
-                width: "100%",
-                height: 150,
-                background: "#bbb",
-                marginBottom: 10
+                background: "#ddd",
+                padding: 10,
+                borderRadius: 6,
+                textAlign: "center"
               }}
             >
-              {book.image ? (
-                <img
-                  src={book.image}
-                  alt={book.title}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover"
-                  }}
-                />
-              ) : null}
+              <div
+                style={{
+                  width: "100%",
+                  height: 150,
+                  background: "#bbb",
+                  marginBottom: 10
+                }}
+              >
+                {book.image ? (
+                  <img
+                    src={book.image}
+                    alt={book.title}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover"
+                    }}
+                  />
+                ) : null}
+              </div>
+
+              <div style={{ fontSize: 18 }}>{book.title}</div>
+
+              <div style={{ color: "gold", margin: "6px 0" }}>
+                {"⭐".repeat(Number(book.rating || 0))}
+              </div>
+
+              <button
+                onClick={() => deleteBook(index)}
+                style={{
+                  marginTop: 8,
+                  padding: "6px 10px",
+                  background: "#c44536",
+                  color: "white",
+                  border: "none",
+                  borderRadius: 6
+                }}
+              >
+                Delete
+              </button>
             </div>
-
-            {/* TITLE */}
-            <div style={{ fontSize: 18 }}>{book.title}</div>
-
-            {/* STARS */}
-            <div style={{ color: "gold", margin: "6px 0" }}>
-              {"⭐".repeat(book.rating || 0)}
-            </div>
-
-            {/* DELETE BUTTON */}
-            <button
-              onClick={() => deleteBook(index)}
-              style={{
-                marginTop: 8,
-                padding: "6px 10px",
-                background: "#c44536",
-                color: "white",
-                border: "none",
-                borderRadius: 6
-              }}
-            >
-              Delete
-            </button>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </main>
   );
 }
