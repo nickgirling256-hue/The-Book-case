@@ -1,48 +1,55 @@
+
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export default function Home() {
-  const starterBooks = [
-    {
-      title: "1984",
-      rating: 5,
-      image: "https://covers.openlibrary.org/b/isbn/9780451524935-L.jpg",
-      review: ""
-    },
-    {
-      title: "The Hobbit",
-      rating: 4,
-      image: "https://covers.openlibrary.org/b/isbn/9780547928227-L.jpg",
-      review: ""
-    },
-    {
-      title: "Dune",
-      rating: 5,
-      image: "https://covers.openlibrary.org/b/isbn/9780441172719-L.jpg",
-      review: ""
-    },
-    {
-      title: "Atomic Habits",
-      rating: 4,
-      image: "https://covers.openlibrary.org/b/isbn/9780735211292-L.jpg",
-      review: ""
+export default function AddWantedBookPage() {
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [notes, setNotes] = useState("");
+  const [message, setMessage] = useState("");
+
+  async function saveWantedBook() {
+    setMessage("Fetching book cover...");
+
+    let image = "";
+
+    try {
+      const response = await fetch(
+        `https://openlibrary.org/search.json?title=${encodeURIComponent(title)}&author=${encodeURIComponent(author)}`
+      );
+      const data = await response.json();
+
+      if (data.docs && data.docs.length > 0) {
+        const firstBook = data.docs[0];
+
+        if (firstBook.cover_i) {
+          image = `https://covers.openlibrary.org/b/id/${firstBook.cover_i}-L.jpg`;
+        }
+      }
+    } catch (error) {
+      console.log("Cover fetch failed", error);
     }
-  ];
 
-  const [books, setBooks] = useState(starterBooks);
+    const existingWantedBooks =
+      JSON.parse(localStorage.getItem("wantedBooks")) || [];
 
-  useEffect(() => {
-    const savedBooks = localStorage.getItem("myBooks");
-    if (savedBooks) {
-      setBooks(JSON.parse(savedBooks));
-    }
-  }, []);
+    const newBook = {
+      title,
+      author,
+      notes,
+      image,
+      rating: 0
+    };
 
-  function deleteBook(indexToDelete) {
-    const updatedBooks = books.filter((_, index) => index !== indexToDelete);
-    setBooks(updatedBooks);
-    localStorage.setItem("myBooks", JSON.stringify(updatedBooks));
+    const updatedWantedBooks = [newBook, ...existingWantedBooks];
+    localStorage.setItem("wantedBooks", JSON.stringify(updatedWantedBooks));
+
+    setMessage("Wanted book saved!");
+
+    setTitle("");
+    setAuthor("");
+    setNotes("");
   }
 
   return (
@@ -54,33 +61,9 @@ export default function Home() {
         minHeight: "100vh"
       }}
     >
-      <h1>My Bookshelf</h1>
+      <h1>Add a Wanted Book</h1>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: 12,
-          marginBottom: 20
-        }}
-      >
-        <a
-          href="/admin"
-          style={{
-            display: "block",
-            textAlign: "center",
-            padding: "12px 10px",
-            background: "#8b5e3c",
-            color: "white",
-            textDecoration: "none",
-            borderRadius: 8,
-            fontWeight: "bold",
-            boxShadow: "0 4px 6px rgba(0,0,0,0.2)"
-          }}
-        >
-          ➕ Add Read Book
-        </a>
-
+      <div style={{ marginBottom: 20 }}>
         <a
           href="/wanted"
           style={{
@@ -95,65 +78,63 @@ export default function Home() {
             boxShadow: "0 4px 6px rgba(0,0,0,0.2)"
           }}
         >
-          📚 Wanted Books
+          ← Back to Wanted Books
         </a>
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
-          gap: 20,
-          marginTop: 20
-        }}
-      >
-        {books.map((book, i) => (
-          <div
-            key={i}
-            style={{
-              background: "#e7dcc8",
-              padding: 12,
-              textAlign: "center",
-              borderRadius: 8
-            }}
-          >
-            <img
-              src={book.image || "https://via.placeholder.com/200x300?text=No+Cover"}
-              alt={book.title}
-              onError={(e) => {
-                e.currentTarget.src =
-                  "https://via.placeholder.com/200x300?text=No+Cover";
-              }}
-              style={{
-                width: "100%",
-                height: 220,
-                objectFit: "cover",
-                marginBottom: 12,
-                borderRadius: 4
-              }}
-            />
-            <p style={{ fontSize: 18, margin: "8px 0" }}>{book.title}</p>
-            <p style={{ fontSize: 24, margin: "0 0 12px 0" }}>
-              {"⭐".repeat(Number(book.rating || 0))}
-            </p>
+      <div style={{ display: "grid", gap: 12, maxWidth: 500, marginTop: 20 }}>
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Book title"
+          style={{
+            padding: 12,
+            fontSize: 16,
+            border: "1px solid #ccc",
+            borderRadius: 6
+          }}
+        />
+        <input
+          value={author}
+          onChange={(e) => setAuthor(e.target.value)}
+          placeholder="Author"
+          style={{
+            padding: 12,
+            fontSize: 16,
+            border: "1px solid #ccc",
+            borderRadius: 6
+          }}
+        />
+        <textarea
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          placeholder="Why you want to read it"
+          rows="5"
+          style={{
+            padding: 12,
+            fontSize: 16,
+            border: "1px solid #ccc",
+            borderRadius: 6
+          }}
+        />
+        <button
+          type="button"
+          onClick={saveWantedBook}
+          style={{
+            padding: 12,
+            fontSize: 16,
+            background: "#3c6e71",
+            color: "white",
+            border: "none",
+            borderRadius: 8,
+            fontWeight: "bold",
+            boxShadow: "0 4px 6px rgba(0,0,0,0.2)"
+          }}
+        >
+          Save Wanted Book
+        </button>
 
-            <button
-              type="button"
-              onClick={() => deleteBook(i)}
-              style={{
-                padding: "8px 12px",
-                fontSize: 14,
-                background: "#a94442",
-                color: "white",
-                border: "none",
-                borderRadius: 6,
-                boxShadow: "0 4px 6px rgba(0,0,0,0.2)"
-              }}
-            >
-              Delete
-            </button>
-          </div>
-        ))}
+        {message ? <p>{message}</p> : null}
       </div>
     </main>
   );
